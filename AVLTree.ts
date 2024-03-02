@@ -20,12 +20,13 @@ this.right=null;
 this.height=1;
 }
 }
+
 class AVLTree {
     public root: AVLNode | null;
     constructor() {
     this.root = null;
     }
-    private getHeight(node: AVLNode | null): number {
+    public getHeight(node: AVLNode | null): number {
     return node ? node.height : 0;
     }
     private updateHeight(node: AVLNode): void {
@@ -36,42 +37,105 @@ class AVLTree {
     private getBalanceFactor(node: AVLNode): number {
     return this.getHeight(node.left) - this.getHeight(node.right);
     }
+
+
+
+//insert
     public insert(key: number): void {
     this.root = this.insertData(this.root, key);
     }
     private insertData(node: AVLNode | null, key: number): AVLNode {
-    if (!node) {
-    return new AVLNode(key);
-    } else if (key < node.key) {
-    node.left = this.insertData(node.left, key);
-    node;
-    } else if (key > node.key) {
-    node.right = this.insertData(node.right, key);
-    node;
-    } else {
-    return node;
+        if (!node) {
+        return new AVLNode(key);
+        } else if (key < node.key) {
+        node.left = this.insertData(node.left, key);
+        node;
+        } else if (key > node.key) {
+        node.right = this.insertData(node.right, key);
+        node;
+        } else {
+        return node;
+        }
+        this.updateHeight(node);
+        let balance: number = this.getBalanceFactor(node);
+        if (balance > 1) {
+        let select = node.left as AVLNode;
+        if (key < select.key) {
+        return this.rightRotate(node);
+        } else {
+        node.left = this.leftRotate(node.left as AVLNode);
+        return this.rightRotate(node);
+        }
+        } else if (balance < -1) {
+        let select = node.left as AVLNode;
+        if (key > select.key) {
+        return this.leftRotate(node);
+        } else {
+        node.right = this.rightRotate(node.left as AVLNode);
+        return this.leftRotate(node);
+        }
+        }
+        return node;
+        }
+    
+
+
+//Search
+    public find(key: number){
+        if(this.root === null){
+        return false;}
+        var current = this.root,
+        found = false;
+        while (current && !found){
+            if(key  < current.key){
+                key = current.left;
+            }else if(key > current.key){
+                key = current.right;
+            }else {
+                found = true;
+            }
+           
+        }
+        if(!found){ return undefined;}
+        return current;
     }
-    this.updateHeight(node);
-    let balance: number = this.getBalanceFactor(node);
-    if (balance > 1) {
-    let select = node.left as AVLNode;
-    if (key < select.key) {
-    return this.rightRotate(node);
-    } else {
-    node.left = this.leftRotate(node.left as AVLNode);
-    return this.rightRotate(node);
+
+
+//get Height
+public count(){
+    if(this.root === null){
+    return false;}
+    //implement the counting function
+          
     }
-    } else if (balance < -1) {
-    let select = node.left as AVLNode;
-    if (key > select.key) {
-    return this.leftRotate(node);
-    } else {
-    node.right = this.rightRotate(node.left as AVLNode);
-    return this.leftRotate(node);
-    }
-    }
-    return node;
-    }
+
+//get Height
+    public Height(){
+        if(this.root === null){
+        return false;}
+        var height = this.getHeight(this.root)
+        return height;        
+        }
+
+        
+//Deletion
+        public delete(key: number): void {
+            this.root = this.deleteData(this.root, key);
+        }
+        private deleteData(node: AVLNode | null, key: number): AVLNode {
+            
+
+            // deleting function and updating the height after deletion
+
+            
+
+
+            return new AVLNode(key);
+            }
+
+
+
+
     private rightRotate(node: AVLNode): AVLNode {
     let x: AVLNode = node.left as AVLNode;
     let T2 = x.right as AVLNode;
@@ -97,5 +161,7 @@ class AVLTree {
     this.inOrderTraversal(node.right);
     }
     }
+
+
     }
    
