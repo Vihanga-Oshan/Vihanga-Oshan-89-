@@ -1,5 +1,5 @@
 ﻿# Vihanga-Oshan-89-
-to run 
+To run 
 
 var tree = new AVLTree();
 tree.insert(10)
